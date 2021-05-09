@@ -1,6 +1,5 @@
-package domain;
+package com.exercise.minesweeper.domain;
 
-import com.exercise.minesweeper.domain.NewGameRequest;
 import org.junit.jupiter.api.Test;
 
 public class NewMinesweeperGameTest {
