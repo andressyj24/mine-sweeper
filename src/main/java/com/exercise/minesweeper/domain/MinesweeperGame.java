@@ -1,5 +1,8 @@
 package com.exercise.minesweeper.domain;
 
+import lombok.Data;
+
+@Data
 public class MinesweeperGame {
 
     private NewGameRequest newGameRequest;
@@ -8,30 +11,6 @@ public class MinesweeperGame {
 
     public MinesweeperGame(NewGameRequest newGameRequest) {
         this.newGameRequest = newGameRequest;
-    }
-
-    public NewGameRequest getNewGameRequest() {
-        return newGameRequest;
-    }
-
-    public void setNewGameRequest(NewGameRequest newGameRequest) {
-        this.newGameRequest = newGameRequest;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public Integer getTime() {
-        return time;
-    }
-
-    public void setTime(Integer time) {
-        this.time = time;
     }
 
 }
