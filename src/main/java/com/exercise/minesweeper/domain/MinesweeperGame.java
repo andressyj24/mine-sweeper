@@ -5,12 +5,11 @@ import lombok.Data;
 @Data
 public class MinesweeperGame {
 
-    private NewGameRequest newGameRequest;
     private Board board;
     private Integer time;
 
     public MinesweeperGame(NewGameRequest newGameRequest) {
-        this.newGameRequest = newGameRequest;
+        this.board = new Board(newGameRequest.getRows(), newGameRequest.getColumns());
     }
 
 }
