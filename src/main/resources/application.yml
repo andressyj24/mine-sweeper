@@ -1,0 +1,6 @@
+spring:
+  jackson:
+    mapper.sort_properties_alphabetically: true
+    default-property-inclusion: non_absent
+    serialization.indent_output: true
+    property-naming-strategy: SNAKE_CASE
