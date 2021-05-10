@@ -9,7 +9,7 @@ public class MinesweeperGame {
     private Integer time;
 
     public MinesweeperGame(NewGameRequest newGameRequest) {
-        this.board = new Board(newGameRequest.getRows(), newGameRequest.getColumns());
+        this.board = new Board(newGameRequest.getRows(), newGameRequest.getColumns(), newGameRequest.getDifficulty());
     }
 
 }
