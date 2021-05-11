@@ -1,14 +1,13 @@
 package com.exercise.minesweeper.domain;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Repository;
-
-import java.util.UUID;
 
 @Repository
 public class GameRepository {
     public MinesweeperGame save(MinesweeperGame minesweeperGame) {
-        UUID generatedUUID = UUID.randomUUID();
-        minesweeperGame.setGameId(generatedUUID);
+        String generatedGameId = RandomStringUtils.randomAlphabetic(8);
+        minesweeperGame.setGameId(generatedGameId);
         return minesweeperGame;
     }
 }

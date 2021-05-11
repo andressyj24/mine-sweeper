@@ -2,12 +2,10 @@ package com.exercise.minesweeper.domain;
 
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 public class MinesweeperGame {
 
-    private UUID gameId;
+    private String gameId;
     private Board board;
     private Integer time;
 
