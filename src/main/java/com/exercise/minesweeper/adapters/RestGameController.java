@@ -28,8 +28,7 @@ public class RestGameController implements GameController {
     @Override
     public @ResponseBody NewGameResponse createNewGame(@RequestBody NewGameRequest newGameRequest){
         MinesweeperGame newGame = gameService.createNewGame(newGameRequest);
-        NewGameResponse newGameResponse = new NewGameResponse(newGame.getGameId(), "andres");
-        return newGameResponse;
+        return new NewGameResponse(newGame.getGameId(), "andres");
     }
 
     @Override
