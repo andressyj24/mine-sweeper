@@ -56,6 +56,14 @@ public class NewMinesweeperGameTest {
         assertDifficultyOfBoard(newBoard);
     }
 
+    @Test
+    public void shouldCreateANewGameWithZeroDifficulty() {
+        NewGameRequest newGameRequest = new NewGameRequest(4, 3, 5, Difficulty.ZERO.toString());
+        MinesweeperGame newMinesweeperGame = new MinesweeperGame(newGameRequest);
+        Board newBoard = newMinesweeperGame.getBoard();
+        assertDifficultyOfBoard(newBoard);
+    }
+
     private void assertDifficultyOfBoard(Board newBoard) {
         int mineCounter = 0;
         for (int i = 0; i < newBoard.getRows(); i++) {
