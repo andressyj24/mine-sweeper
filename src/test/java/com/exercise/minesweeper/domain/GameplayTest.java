@@ -1,5 +1,6 @@
 package com.exercise.minesweeper.domain;
 
+import com.exercise.minesweeper.adapters.NewGameRequest;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;

@@ -1,4 +1,4 @@
-package com.exercise.minesweeper.domain;
+package com.exercise.minesweeper.adapters;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

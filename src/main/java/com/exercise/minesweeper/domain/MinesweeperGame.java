@@ -1,5 +1,6 @@
 package com.exercise.minesweeper.domain;
 
+import com.exercise.minesweeper.adapters.NewGameRequest;
 import lombok.Data;
 
 @Data

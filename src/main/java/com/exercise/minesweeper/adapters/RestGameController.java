@@ -31,6 +31,13 @@ public class RestGameController implements GameController {
         return new NewGameResponse(newGame.getGameId(), "andres");
     }
 
+    @PatchMapping ("/{gameId}/boards")
+    @ResponseStatus(HttpStatus.OK)
+    @Override
+    public @ResponseBody UpdateGameResponse openBoardCell(@RequestBody UpdateGameRequest updateGameRequest, @PathVariable String gameId){
+        return new UpdateGameResponse();
+    }
+
     @Override
     public MinesweeperGame saveGame(SaveGameRequest saveGameRequest) {
         return null;

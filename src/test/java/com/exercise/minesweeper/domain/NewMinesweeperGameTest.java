@@ -1,5 +1,6 @@
 package com.exercise.minesweeper.domain;
 
+import com.exercise.minesweeper.adapters.NewGameRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
