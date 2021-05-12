@@ -27,6 +27,32 @@ public class GameplayTest {
         assertThat(boardCellNeighbors, Matchers.containsInAnyOrder(expectedNeighbors.toArray()));
     }
 
+    @Test
+    public void shouldTerminateGameWhenOpenedCellHasAMine() {
+        NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.MEDIUM.toString());
+        MinesweeperGame newGame = new MinesweeperGame(gameRequest);
+        newGame.getBoard().getBoardCell(new CellPosition(0, 0)).setIsMined(true);
+        newGame.openCell(new CellPosition(0, 0));
+        Assertions.assertEquals(newGame.getStatus(), GameStatus.OVER);
+    }
+
+    @Test
+    public void shouldGameBeInProgressWhenOpenedCellIsEmpty() {
+        NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.ZERO.toString());
+        MinesweeperGame newGame = new MinesweeperGame(gameRequest);
+        newGame.openCell(new CellPosition(0, 0));
+        Assertions.assertEquals(newGame.getStatus(), GameStatus.IN_PROGRESS);
+    }
+
+    @Ignore
+    @Test
+    public void shouldOpenAllImmediateEmptyNeighborsCellsGivenASingleEmptyCell() {
+        Board board = new Board(4, 4, Difficulty.ZERO.toString());
+        CellPosition position = new CellPosition(1, 1);
+        board.openBoardCell(position);
+        assertNeighborsCells(board.getBoardCell(position), board);
+    }
+
     private List<BoardCell> createExpectedNeighbors() {
         BoardCellState defaultState = BoardCellState.CLOSED;
         return List.of(new BoardCell(new CellPosition(0, 1), defaultState, false),
@@ -40,18 +66,9 @@ public class GameplayTest {
 
     }
 
-    @Ignore
-    @Test
-    public void shouldOpenAllImmediateEmptyNeighborsCellsGivenASingleEmptyCell() {
-        Board board = new Board(4, 4, Difficulty.ZERO.toString());
-        BoardCell currentCell = board.openBoardCell(new CellPosition(1, 1));
-        assertNeighborsCells(currentCell, board);
-    }
-
     private void assertNeighborsCells(BoardCell currentCell, Board board) {
 
     }
-
 
     private void assertEntireBoardIsOpened(Board board) {
         for (int row = 0; row < board.getRows(); row++) {

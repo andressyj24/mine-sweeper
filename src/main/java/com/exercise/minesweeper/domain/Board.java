@@ -12,10 +12,12 @@ public class Board {
 
     private BoardCell[][] boardArea;
     private Difficulty difficulty;
+    private boolean mineOpened;
 
     public Board(Integer rows, Integer columns, String difficulty) {
         boardArea = initializeBoard(rows, columns);
         this.difficulty = Difficulty.valueOf(difficulty);
+        this.mineOpened = false;
         this.loadMinesInBoard();
     }
 
@@ -71,12 +73,13 @@ public class Board {
         return this.boardArea[0].length;
     }
 
-    public BoardCell openBoardCell(CellPosition position) {
+    public Board openBoardCell(CellPosition position) {
         BoardCell currentBoardCell = this.getBoardCell(position);
         if (currentBoardCell.getState().equals(BoardCellState.CLOSED)) {
             currentBoardCell.setState(BoardCellState.OPENED);
+            this.mineOpened = currentBoardCell.getIsMined();
         }
-        return currentBoardCell;
+        return this;
     }
 
     public BoardCell getBoardCell(CellPosition position) {
