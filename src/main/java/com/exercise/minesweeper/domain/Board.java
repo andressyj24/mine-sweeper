@@ -2,6 +2,7 @@ package com.exercise.minesweeper.domain;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Random;
 
 @Data
@@ -21,7 +22,7 @@ public class Board {
         for (int row = 0; row < this.getRows(); row++) {
             BoardCell[] currentRow = this.boardArea[row];
             for (int col = 0; col < currentRow.length; col++) {
-                currentRow[col] = new BoardCell(row, col, BoardCellState.COVERED, false);
+                currentRow[col] = new BoardCell(new CellPosition(row, col), BoardCellState.CLOSED, false);
             }
         }
         return boardArea;
@@ -68,4 +69,26 @@ public class Board {
         return this.boardArea[0].length;
     }
 
+    public BoardCell openBoardCell(CellPosition position) {
+        BoardCell currentBoardCell = this.getBoardCell(position);
+        if (currentBoardCell.getState().equals(BoardCellState.CLOSED)) {
+            currentBoardCell.setState(BoardCellState.OPENED);
+        }
+        return currentBoardCell;
+    }
+
+    public BoardCell getBoardCell(CellPosition position) {
+        return this.boardArea[position.getRow()][position.getColumn()];
+    }
+
+    public List<BoardCell> getNeighborsOf(int row, int col) {
+        BoardCell currentBoardCell = this.getBoardCell(new CellPosition(row, col));
+        return null;
+    }
+
+    private BoardCell getNorthNeighbor(BoardCell boardCell) {
+        //int neighborRow = boardCell.getRow() - 1;
+        //int neighborColumn = boardCell.getColumn();
+        return null;
+    }
 }

@@ -83,8 +83,8 @@ public class NewMinesweeperGameTest {
         for (int i = 0; i < newBoard.getRows(); i++) {
             BoardCell[] currentRow = newBoard.getBoardArea()[i];
             for (BoardCell currentCell : currentRow) {
-                Assertions.assertEquals(currentCell.getState(), BoardCellState.COVERED,
-                        "New Board cell must be COVERED as initial state");
+                Assertions.assertEquals(currentCell.getState(), BoardCellState.CLOSED,
+                        "New Board cell must be CLOSED as initial state");
             }
         }
 
