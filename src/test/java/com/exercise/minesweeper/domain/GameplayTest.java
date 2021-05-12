@@ -1,6 +1,5 @@
 package com.exercise.minesweeper.domain;
 
-import org.assertj.core.api.Assert;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;

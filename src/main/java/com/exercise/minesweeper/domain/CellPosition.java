@@ -23,7 +23,7 @@ public class CellPosition {
     }
 
     public boolean isValid() {
-        return this.row > 0 && this.column > 0;
+        return this.row >= 0 && this.column >= 0;
     }
 
     public CellPosition getPositionAt(CellPosition nextPosition) {

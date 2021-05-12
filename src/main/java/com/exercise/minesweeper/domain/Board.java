@@ -93,7 +93,7 @@ public class Board {
 
         return neighborsMap.values().stream()
                 .map(this::getBoardCell)
-                //.filter(boardCell -> boardCell.isInBoard(this.getRows(), this.getColumns()))
+                .filter(boardCell -> boardCell.isInBoard(this.getRows(), this.getColumns()))
                 .collect(Collectors.toList());
     }
 
