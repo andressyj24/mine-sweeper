@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class MinesweeperGame {
 
+    private String gameId;
     private Board board;
     private Integer time;
 

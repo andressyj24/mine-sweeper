@@ -26,8 +26,9 @@ public class RestGameController implements GameController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Override
-    public @ResponseBody MinesweeperGame createNewGame(@RequestBody NewGameRequest newGameRequest){
-        return gameService.createNewGame(newGameRequest);
+    public @ResponseBody NewGameResponse createNewGame(@RequestBody NewGameRequest newGameRequest){
+        MinesweeperGame newGame = gameService.createNewGame(newGameRequest);
+        return new NewGameResponse(newGame.getGameId(), "andres");
     }
 
     @Override
