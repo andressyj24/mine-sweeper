@@ -1,9 +1,14 @@
 package com.exercise.minesweeper.domain;
 
+import org.assertj.core.api.Assert;
+import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GameplayTest {
 
@@ -15,12 +20,12 @@ public class GameplayTest {
         Assertions.assertEquals(BoardCellState.OPENED, boardCell.getState());
     }
 
-    //@Test
+    @Test
     public void shouldIdentifyNeighborsCellsGivenASingleCell() {
         Board board = new Board(4, 4, Difficulty.ZERO.toString());
-        List<BoardCell> boardCellNeighbors = board.getNeighborsOf(1, 1);
+        List<BoardCell> boardCellNeighbors = board.getNeighborsOf(new CellPosition(1, 1));
         List<BoardCell> expectedNeighbors = createExpectedNeighbors();
-        Assertions.assertEquals(expectedNeighbors, boardCellNeighbors);
+        assertThat(boardCellNeighbors, Matchers.containsInAnyOrder(expectedNeighbors.toArray()));
     }
 
     private List<BoardCell> createExpectedNeighbors() {
@@ -36,7 +41,8 @@ public class GameplayTest {
 
     }
 
-
+    @Ignore
+    @Test
     public void shouldOpenAllImmediateEmptyNeighborsCellsGivenASingleEmptyCell() {
         Board board = new Board(4, 4, Difficulty.ZERO.toString());
         BoardCell currentCell = board.openBoardCell(new CellPosition(1, 1));

@@ -21,4 +21,14 @@ public class CellPosition {
         CellPosition otherPosition = (CellPosition) obj;
         return otherPosition.getRow().equals(this.row) && otherPosition.getColumn().equals(this.column);
     }
+
+    public boolean isValid() {
+        return this.row > 0 && this.column > 0;
+    }
+
+    public CellPosition getPositionAt(CellPosition nextPosition) {
+        int targetRow = row + nextPosition.getRow();
+        int targetColumn = column + nextPosition.getColumn();
+        return new CellPosition(targetRow, targetColumn);
+    }
 }

@@ -3,7 +3,9 @@ package com.exercise.minesweeper.domain;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Data
 public class Board {
@@ -78,17 +80,21 @@ public class Board {
     }
 
     public BoardCell getBoardCell(CellPosition position) {
-        return this.boardArea[position.getRow()][position.getColumn()];
+        try {
+            return this.boardArea[position.getRow()][position.getColumn()];
+        } catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
     }
 
-    public List<BoardCell> getNeighborsOf(int row, int col) {
-        BoardCell currentBoardCell = this.getBoardCell(new CellPosition(row, col));
-        return null;
+    public List<BoardCell> getNeighborsOf(CellPosition cellPosition) {
+        BoardCell currentBoardCell = this.getBoardCell(cellPosition);
+        Map<String, CellPosition> neighborsMap = currentBoardCell.getNeighborsMap();
+
+        return neighborsMap.values().stream()
+                .map(this::getBoardCell)
+                //.filter(boardCell -> boardCell.isInBoard(this.getRows(), this.getColumns()))
+                .collect(Collectors.toList());
     }
 
-    private BoardCell getNorthNeighbor(BoardCell boardCell) {
-        //int neighborRow = boardCell.getRow() - 1;
-        //int neighborColumn = boardCell.getColumn();
-        return null;
-    }
 }
