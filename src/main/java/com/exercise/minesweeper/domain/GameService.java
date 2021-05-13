@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class GameService {
 
-    GameRepository gameRepository;
+    CacheGameRepository gameRepository;
 
     public MinesweeperGame createNewGame(NewGameRequest newGameRequest) {
         MinesweeperGame minesweeperGame = new MinesweeperGame(newGameRequest);
-        return gameRepository.save(minesweeperGame);
+        return gameRepository.saveGame(minesweeperGame);
+    }
+
+    public MinesweeperGame getGameById(String gameId) {
+        return gameRepository.getGameById(gameId);
     }
 }

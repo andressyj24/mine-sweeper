@@ -2,8 +2,10 @@ package com.exercise.minesweeper.domain;
 
 import com.exercise.minesweeper.adapters.NewGameRequest;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class MinesweeperGame {
 
     private String gameId;

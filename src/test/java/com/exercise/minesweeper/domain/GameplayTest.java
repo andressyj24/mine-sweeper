@@ -82,7 +82,7 @@ public class GameplayTest {
 
 
     private void assertOpenBoardCellsInBoard(Board board, List<CellPosition> cellPositions) {
-        List<BoardCell> boardCells = cellPositions.isEmpty() ? board.getAllBoardCells() : board.getListOfBoardCells(cellPositions);
+        List<BoardCell> boardCells = cellPositions.isEmpty() ? board.listAllBoardCells() : board.getListOfBoardCells(cellPositions);
         List<BoardCell> filteredBoardCells = boardCells.stream()
                 .filter(cp -> cp.getState().equals(BoardCellState.OPENED))
                 .collect(Collectors.toList());

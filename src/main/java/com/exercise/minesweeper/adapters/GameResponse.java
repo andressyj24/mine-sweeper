@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewGameResponse {
+public class GameResponse {
 
-    private String newGameId;
+    private String gameId;
     private String username;
+    private String gameStatus;
     private Board board;
 }

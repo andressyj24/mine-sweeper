@@ -1,11 +1,13 @@
 package com.exercise.minesweeper.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 public class Board {
 
     private BoardCell[][] boardArea;
@@ -108,7 +110,7 @@ public class Board {
         return positions.stream().map(this::getBoardCell).collect(Collectors.toList());
     }
 
-    public List<BoardCell> getAllBoardCells() {
+    public List<BoardCell> listAllBoardCells() {
         List<BoardCell> allCells = new ArrayList<>();
         Arrays.stream(this.boardArea).map(row -> allCells.addAll(List.of(row)));
         return allCells;

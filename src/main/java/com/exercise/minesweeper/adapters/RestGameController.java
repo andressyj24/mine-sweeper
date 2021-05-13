@@ -1,11 +1,12 @@
 package com.exercise.minesweeper.adapters;
 
-import com.exercise.minesweeper.domain.*;
+import com.exercise.minesweeper.domain.GameService;
+import com.exercise.minesweeper.domain.MinesweeperGame;
 import com.exercise.minesweeper.ports.GameController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static com.exercise.minesweeper.adapters.GetGamesResponse.*;
 
 @RestController
 @RequestMapping("/api/games")
@@ -27,9 +28,9 @@ public class RestGameController implements GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @Override
     public @ResponseBody
-    NewGameResponse createNewGame(@RequestBody NewGameRequest newGameRequest) {
+    GameResponse createNewGame(@RequestBody NewGameRequest newGameRequest) {
         MinesweeperGame newGame = gameService.createNewGame(newGameRequest);
-        return new NewGameResponse(newGame.getGameId(), "andres", newGame.getBoard());
+        return new GameResponse(newGame.getGameId(), "andres", newGame.getStatus().label, newGame.getBoard());
     }
 
     @PatchMapping("/{gameId}/boards")
@@ -40,18 +41,25 @@ public class RestGameController implements GameController {
         return new UpdateGameResponse();
     }
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Override
+    public @ResponseBody GetGamesResponse getGames() {
+        return null;
+    }
+
+    @GetMapping("/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Override
+    public @ResponseBody GetGamesResponse getGame(@PathVariable String gameId) {
+        MinesweeperGame game = gameService.getGameById(gameId);
+        return from(game);
+    }
+
+
     @Override
     public MinesweeperGame saveGame(SaveGameRequest saveGameRequest) {
         return null;
     }
 
-    @Override
-    public MinesweeperGame loadGame(LoadGameRequest loadGameRequest) {
-        return null;
-    }
-
-    @Override
-    public List<MinesweeperGame> getSavedGames(GetSavedGamesRequest getSavedGamesRequest) {
-        return null;
-    }
 }
