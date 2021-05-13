@@ -17,10 +17,13 @@ public class MinesweeperGame {
         this.status = GameStatus.IN_PROGRESS;
     }
 
-    public void openCell(CellPosition cellPosition) {
-        if (this.status.equals(GameStatus.IN_PROGRESS)) {
+    public MinesweeperGame openCell(CellPosition cellPosition) {
+        boolean isCellClosed = this.board.getBoardCell(cellPosition).getState().equals(BoardCellState.CLOSED);
+        if (this.status.equals(GameStatus.IN_PROGRESS) && isCellClosed) {
             this.board = this.board.openBoardCell(cellPosition);
-            this.status = this.board.isMineOpened() ? GameStatus.OVER : GameStatus.IN_PROGRESS;
+            GameStatus status = this.board.getTotalEmptyCells().equals(0)? GameStatus.WIN : GameStatus.IN_PROGRESS;
+            this.status = this.board.isMineOpened() ? GameStatus.OVER : status;
         }
+        return this;
     }
 }

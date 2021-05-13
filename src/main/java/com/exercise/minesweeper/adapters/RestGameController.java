@@ -29,7 +29,7 @@ public class RestGameController implements GameController {
     public @ResponseBody
     NewGameResponse createNewGame(@RequestBody NewGameRequest newGameRequest) {
         MinesweeperGame newGame = gameService.createNewGame(newGameRequest);
-        return new NewGameResponse(newGame.getGameId(), "andres");
+        return new NewGameResponse(newGame.getGameId(), "andres", newGame.getBoard().toString());
     }
 
     @PatchMapping("/{gameId}/boards")

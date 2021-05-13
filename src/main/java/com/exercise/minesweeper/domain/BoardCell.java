@@ -56,13 +56,13 @@ public class BoardCell {
     public String toString() {
         String stringValue;
         if (this.state.equals(BoardCellState.CLOSED)) {
-            stringValue = "?";
+            stringValue = "[ ]";
         } else if (this.state.equals(BoardCellState.FLAGGED)) {
-            stringValue = "F";
+            stringValue = "?";
         } else if (this.state.equals(BoardCellState.OPENED) && !this.isMined) {
             stringValue = this.cellPosition.getRow() + ":" + this.cellPosition.getColumn();
         } else {
-            stringValue = "X";
+            stringValue = ":(";
         }
 
         return stringValue;

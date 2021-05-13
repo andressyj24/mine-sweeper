@@ -11,11 +11,13 @@ public class Board {
     private BoardCell[][] boardArea;
     private Difficulty difficulty;
     private boolean mineOpened;
+    private Integer totalEmptyCells;
 
     public Board(Integer rows, Integer columns, String difficulty) {
         boardArea = initializeBoard(rows, columns);
         this.difficulty = Difficulty.valueOf(difficulty);
         this.mineOpened = false;
+        this.totalEmptyCells = (rows * columns) - this.getNumberOfMines();
         this.loadMinesInBoard();
     }
 
@@ -30,15 +32,6 @@ public class Board {
         return boardArea;
     }
 
-    public void printBoard() {
-        for (int row = 0; row < this.getRows(); row++) {
-            BoardCell[] currentRow = this.boardArea[row];
-            for (BoardCell boardCell : currentRow) {
-                System.out.print("| " + boardCell);
-            }
-            System.out.println();
-        }
-    }
 
     public Integer getNumberOfMines() {
         int totalNumberOfCells = this.getRows() * this.getColumns();
@@ -83,11 +76,12 @@ public class Board {
 
     private void openNeighborCells(BoardCell currentBoardCell) {
         if (!this.mineOpened) {
-            boolean allNeighborsAreSafe = this.getNeighborsOf(currentBoardCell.getCellPosition()).stream()
+            List<BoardCell> neighbors = this.getNeighborsOf(currentBoardCell.getCellPosition());
+            boolean allNeighborsAreSafe = neighbors.stream()
                     .noneMatch(BoardCell::getIsMined);
             if (allNeighborsAreSafe) {
-                this.getNeighborsOf(currentBoardCell.getCellPosition())
-                        .forEach(n -> n.setState(BoardCellState.OPENED));
+                neighbors.forEach(n -> n.setState(BoardCellState.OPENED));
+                this.totalEmptyCells = this.totalEmptyCells - neighbors.size() - 1;
             }
         }
     }
@@ -98,7 +92,7 @@ public class Board {
 
         return neighborsMap.values().stream()
                 .map(this::getBoardCell)
-                .filter(boardCell -> boardCell != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -111,13 +105,28 @@ public class Board {
     }
 
     public List<BoardCell> getListOfBoardCells(List<CellPosition> positions) {
-        return positions.stream().map(p -> this.getBoardCell(p)).collect(Collectors.toList());
+        return positions.stream().map(this::getBoardCell).collect(Collectors.toList());
     }
 
     public List<BoardCell> getAllBoardCells() {
         List<BoardCell> allCells = new ArrayList<>();
         Arrays.stream(this.boardArea).map(row -> allCells.addAll(List.of(row)));
         return allCells;
+    }
+
+    public void printBoard() {
+        for (int row = 0; row < this.getRows(); row++) {
+            BoardCell[] currentRow = this.boardArea[row];
+            for (BoardCell boardCell : currentRow) {
+                System.out.print("| " + boardCell);
+            }
+            System.out.println();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.boardArea);
     }
 
 }

@@ -51,6 +51,14 @@ public class GameplayTest {
     }
 
     @Test
+    public void shouldTerminateGameWhenAllSafeCellsAreDiscovered() {
+        NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.ZERO.toString());
+        MinesweeperGame newGame = new MinesweeperGame(gameRequest);
+        newGame.openCell(new CellPosition(1, 1));
+        Assertions.assertEquals(newGame.getStatus(), GameStatus.WIN);
+    }
+
+    @Test
     public void shouldGameBeInProgressWhenOpenedCellIsEmpty() {
         NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.ZERO.toString());
         MinesweeperGame newGame = new MinesweeperGame(gameRequest);

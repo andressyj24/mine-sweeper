@@ -11,4 +11,5 @@ public class NewGameResponse {
 
     private String newGameId;
     private String username;
+    private String board;
 }
