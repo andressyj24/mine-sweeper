@@ -2,11 +2,11 @@ package com.exercise.minesweeper.domain;
 
 import com.exercise.minesweeper.adapters.NewGameRequest;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -29,6 +29,19 @@ public class GameplayTest {
     }
 
     @Test
+    public void shouldOpenNearestNeighborsGivenAnEmptyBoardCell() {
+        NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.ZERO.toString());
+        MinesweeperGame newGame = new MinesweeperGame(gameRequest);
+        newGame.openCell(new CellPosition(0, 0));
+        List<CellPosition> expectedPositions = List.of(new CellPosition(0, 0),
+                new CellPosition(0, 1),
+                new CellPosition(1, 0),
+                new CellPosition(1, 1));
+        assertOpenBoardCellsInBoard(newGame.getBoard(), expectedPositions);
+        newGame.getBoard().printBoard();
+    }
+
+    @Test
     public void shouldTerminateGameWhenOpenedCellHasAMine() {
         NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.MEDIUM.toString());
         MinesweeperGame newGame = new MinesweeperGame(gameRequest);
@@ -45,14 +58,6 @@ public class GameplayTest {
         Assertions.assertEquals(newGame.getStatus(), GameStatus.IN_PROGRESS);
     }
 
-    @Ignore
-    @Test
-    public void shouldOpenAllImmediateEmptyNeighborsCellsGivenASingleEmptyCell() {
-        Board board = new Board(4, 4, Difficulty.ZERO.toString());
-        CellPosition position = new CellPosition(1, 1);
-        board.openBoardCell(position);
-        assertNeighborsCells(board.getBoardCell(position), board);
-    }
 
     private List<BoardCell> createExpectedNeighbors() {
         BoardCellState defaultState = BoardCellState.CLOSED;
@@ -67,16 +72,12 @@ public class GameplayTest {
 
     }
 
-    private void assertNeighborsCells(BoardCell currentCell, Board board) {
 
-    }
-
-    private void assertEntireBoardIsOpened(Board board) {
-        for (int row = 0; row < board.getRows(); row++) {
-            for (int col = 0; col < board.getColumns(); col++) {
-                Assertions.assertEquals(BoardCellState.CLOSED, board.getBoardCell(new CellPosition(row, col)).getState(),
-                        "Adyacente cell is not uncovered: " + row + " : " + col);
-            }
-        }
+    private void assertOpenBoardCellsInBoard(Board board, List<CellPosition> cellPositions) {
+        List<BoardCell> boardCells = cellPositions.isEmpty() ? board.getAllBoardCells() : board.getListOfBoardCells(cellPositions);
+        List<BoardCell> filteredBoardCells = boardCells.stream()
+                .filter(cp -> cp.getState().equals(BoardCellState.OPENED))
+                .collect(Collectors.toList());
+        Assertions.assertEquals(cellPositions.size(), filteredBoardCells.size(), "Incorrect number of BoardCells opened");
     }
 }

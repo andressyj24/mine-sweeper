@@ -55,11 +55,11 @@ public class BoardCell {
     @Override
     public String toString() {
         String stringValue;
-        if (this.state.equals(BoardCellState.OPENED)) {
+        if (this.state.equals(BoardCellState.CLOSED)) {
             stringValue = "?";
         } else if (this.state.equals(BoardCellState.FLAGGED)) {
             stringValue = "F";
-        } else if (this.state.equals(BoardCellState.CLOSED) && !this.isMined) {
+        } else if (this.state.equals(BoardCellState.OPENED) && !this.isMined) {
             stringValue = this.cellPosition.getRow() + ":" + this.cellPosition.getColumn();
         } else {
             stringValue = "X";
