@@ -2,9 +2,7 @@ package com.exercise.minesweeper.domain;
 
 import lombok.Data;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -12,10 +10,12 @@ public class Board {
 
     private BoardCell[][] boardArea;
     private Difficulty difficulty;
+    private boolean mineOpened;
 
     public Board(Integer rows, Integer columns, String difficulty) {
         boardArea = initializeBoard(rows, columns);
         this.difficulty = Difficulty.valueOf(difficulty);
+        this.mineOpened = false;
         this.loadMinesInBoard();
     }
 
@@ -71,12 +71,35 @@ public class Board {
         return this.boardArea[0].length;
     }
 
-    public BoardCell openBoardCell(CellPosition position) {
+    public Board openBoardCell(CellPosition position) {
         BoardCell currentBoardCell = this.getBoardCell(position);
         if (currentBoardCell.getState().equals(BoardCellState.CLOSED)) {
             currentBoardCell.setState(BoardCellState.OPENED);
+            this.mineOpened = currentBoardCell.getIsMined();
+            this.openNeighborCells(currentBoardCell);
         }
-        return currentBoardCell;
+        return this;
+    }
+
+    private void openNeighborCells(BoardCell currentBoardCell) {
+        if (!this.mineOpened) {
+            boolean allNeighborsAreSafe = this.getNeighborsOf(currentBoardCell.getCellPosition()).stream()
+                    .noneMatch(BoardCell::getIsMined);
+            if (allNeighborsAreSafe) {
+                this.getNeighborsOf(currentBoardCell.getCellPosition())
+                        .forEach(n -> n.setState(BoardCellState.OPENED));
+            }
+        }
+    }
+
+    public List<BoardCell> getNeighborsOf(CellPosition cellPosition) {
+        BoardCell currentBoardCell = this.getBoardCell(cellPosition);
+        Map<String, CellPosition> neighborsMap = currentBoardCell.getNeighborsMap();
+
+        return neighborsMap.values().stream()
+                .map(this::getBoardCell)
+                .filter(boardCell -> boardCell != null)
+                .collect(Collectors.toList());
     }
 
     public BoardCell getBoardCell(CellPosition position) {
@@ -87,14 +110,14 @@ public class Board {
         }
     }
 
-    public List<BoardCell> getNeighborsOf(CellPosition cellPosition) {
-        BoardCell currentBoardCell = this.getBoardCell(cellPosition);
-        Map<String, CellPosition> neighborsMap = currentBoardCell.getNeighborsMap();
+    public List<BoardCell> getListOfBoardCells(List<CellPosition> positions) {
+        return positions.stream().map(p -> this.getBoardCell(p)).collect(Collectors.toList());
+    }
 
-        return neighborsMap.values().stream()
-                .map(this::getBoardCell)
-                .filter(boardCell -> boardCell.isInBoard(this.getRows(), this.getColumns()))
-                .collect(Collectors.toList());
+    public List<BoardCell> getAllBoardCells() {
+        List<BoardCell> allCells = new ArrayList<>();
+        Arrays.stream(this.boardArea).map(row -> allCells.addAll(List.of(row)));
+        return allCells;
     }
 
 }
