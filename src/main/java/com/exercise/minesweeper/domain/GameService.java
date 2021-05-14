@@ -5,6 +5,7 @@ import com.exercise.minesweeper.adapters.UpdateGameRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -34,5 +35,9 @@ public class GameService {
 
     public MinesweeperGame getGameById(String gameId) {
         return gameRepository.getGameById(gameId);
+    }
+
+    public List<MinesweeperGame> getGames() {
+        return gameRepository.getGames();
     }
 }

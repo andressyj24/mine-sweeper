@@ -6,6 +6,8 @@ import com.exercise.minesweeper.ports.GameController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.exercise.minesweeper.adapters.GetGamesResponse.*;
 
 @RestController
@@ -49,7 +51,8 @@ public class RestGameController implements GameController {
     @Override
     public @ResponseBody
     GetGamesResponse getGames() {
-        return null;
+        List<MinesweeperGame> games = gameService.getGames();
+        return from(games);
     }
 
 
@@ -65,8 +68,8 @@ public class RestGameController implements GameController {
 
     //TODO: Implement this functionality
     @Override
-    public MinesweeperGame saveGame(SaveGameRequest saveGameRequest) {
-        return null;
+    public GameResponse saveGame(SaveGameRequest saveGameRequest) {
+        return new GameResponse();
     }
 
 }

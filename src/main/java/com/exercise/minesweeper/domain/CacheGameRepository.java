@@ -5,7 +5,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class CacheGameRepository implements GameRepository {
@@ -29,5 +31,10 @@ public class CacheGameRepository implements GameRepository {
     public MinesweeperGame updateGame(MinesweeperGame game) {
         gameDataMap.put(game.getGameId(), game);
         return gameDataMap.get(game.getGameId());
+    }
+
+    @Override
+    public List<MinesweeperGame> getGames() {
+        return gameDataMap.values().stream().collect(Collectors.toList());
     }
 }
