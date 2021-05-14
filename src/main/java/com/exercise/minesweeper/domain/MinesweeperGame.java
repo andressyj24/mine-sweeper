@@ -27,8 +27,7 @@ public class MinesweeperGame {
         }
         return this;
     }
-
-    //TODO: Implement this funcionality
+    
     public MinesweeperGame flagCell(CellPosition cellPosition) {
         if (this.status.equals(GameStatus.IN_PROGRESS)) {
             this.board = this.board.flagBoardCell(cellPosition);
