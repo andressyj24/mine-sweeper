@@ -1,7 +1,6 @@
 package com.exercise.minesweeper.ports;
 
 import com.exercise.minesweeper.adapters.*;
-import com.exercise.minesweeper.domain.MinesweeperGame;
 
 public interface GameController {
 
@@ -13,6 +12,6 @@ public interface GameController {
 
     GetGamesResponse getGames();
 
-    MinesweeperGame saveGame(SaveGameRequest saveGameRequest);
+    GameResponse saveGame(SaveGameRequest saveGameRequest);
 
 }
