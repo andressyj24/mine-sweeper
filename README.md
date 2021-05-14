@@ -27,7 +27,7 @@ Another concept that I tried to model using DDD is the Aggregate, using this con
 which comprises the concept of Game, this concept must cluster other related concepts: Board and its corresponding list of cells.
 So fundamentally, this cluster of objects has consistency when they are saved together.
 
-###Ports
+### Ports Layer
 This layer represents the different ways of interactions that external services or dependencies can have with minesweeper-api.
 Most times this represents the protocol that is going to be used for integrations.
 
