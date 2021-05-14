@@ -17,7 +17,7 @@ public class BoardCell {
     private BoardCellState state;
     private Boolean isMined;
 
-    public Map<String, CellPosition> getNeighborsMap() {
+    public Map<String, CellPosition> findNeighborsMap() {
         Map<String, CellPosition> neighborsMap = new HashMap<>();
         neighborsMap.put(NORTH.name, this.getNeighborAt(NORTH.cellPosition));
         neighborsMap.put(NORTH_EAST.name, this.getNeighborAt(NORTH_EAST.cellPosition));

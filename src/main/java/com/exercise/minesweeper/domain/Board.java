@@ -102,7 +102,7 @@ public class Board {
 
     public List<BoardCell> getNeighborsOf(CellPosition cellPosition) {
         BoardCell currentBoardCell = this.getBoardCell(cellPosition);
-        Map<String, CellPosition> neighborsMap = currentBoardCell.getNeighborsMap();
+        Map<String, CellPosition> neighborsMap = currentBoardCell.findNeighborsMap();
 
         return neighborsMap.values().stream()
                 .map(this::getBoardCell)
