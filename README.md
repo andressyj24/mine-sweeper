@@ -40,6 +40,12 @@ The red arrows explain the flow of data:
 - RestGameController focuses on handling these requests by calling GameService to execute the corresponding action based on the request.
 - GameService uses the Domain Objects: MinesweeperGame, Board, BoardCell to execute the request and then calls the Repository to persist the state of those objects.
 
+### Some additional details
+- The game has 2 states: IN_PROGRESS and OVER: GameStatus.java
+- Whenever the game is created and also the player has not found a mine, the game is IN_PROGRESS
+- Whenever the player finds a mine, the game changes to OVER and no further action is performed on that game.
+- The BoardCell has several states in the Enum: BoardCellState.java: CLOSED, OPENED, FLAGGED
+- The player can perform 2 actions in order to Update the game: OPEN, FLAG a cell
  
 ## Deliverables:
 * You can check the game is deployed and running in heroku over here: [minesweeper-api-health](https://mine-sweeper-game.herokuapp.com/actuator/health)
