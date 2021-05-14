@@ -17,8 +17,7 @@ public class GameResponse {
     private Board board;
 
     public static GameResponse from(MinesweeperGame game) {
-        GameResponse gameResponse = new GameResponse(game.getGameId(), "andres",
+        return new GameResponse(game.getGameId(), "andres",
                 game.getStatus().label, game.getBoard());
-        return gameResponse;
     }
 }
