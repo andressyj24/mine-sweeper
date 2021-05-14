@@ -20,11 +20,18 @@ public class MinesweeperGame {
     }
 
     public MinesweeperGame openCell(CellPosition cellPosition) {
-        boolean isCellClosed = this.board.getBoardCell(cellPosition).getState().equals(BoardCellState.CLOSED);
-        if (this.status.equals(GameStatus.IN_PROGRESS) && isCellClosed) {
+        if (this.status.equals(GameStatus.IN_PROGRESS)) {
             this.board = this.board.openBoardCell(cellPosition);
             GameStatus status = this.board.getTotalEmptyCells().equals(0)? GameStatus.WIN : GameStatus.IN_PROGRESS;
             this.status = this.board.isMineOpened() ? GameStatus.OVER : status;
+        }
+        return this;
+    }
+
+    //TODO: Implement this funcionality
+    public MinesweeperGame flagCell(CellPosition cellPosition) {
+        if (this.status.equals(GameStatus.IN_PROGRESS)) {
+            this.board = this.board.flagBoardCell(cellPosition);
         }
         return this;
     }

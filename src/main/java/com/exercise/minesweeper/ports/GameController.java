@@ -7,7 +7,7 @@ public interface GameController {
 
     GameResponse createNewGame(NewGameRequest newGameRequest);
 
-    UpdateGameResponse openBoardCell(UpdateGameRequest updateGameRequest, String gameId);
+    UpdateGameResponse updateGameWithAction(UpdateGameRequest updateGameRequest, String gameId);
 
     GetGamesResponse getGame(String gameId);
 

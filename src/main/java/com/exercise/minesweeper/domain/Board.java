@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.exercise.minesweeper.domain.BoardCellState.*;
+
 @Data
 @NoArgsConstructor
 public class Board {
@@ -28,7 +30,7 @@ public class Board {
         for (int row = 0; row < this.getRows(); row++) {
             BoardCell[] currentRow = this.boardArea[row];
             for (int col = 0; col < currentRow.length; col++) {
-                currentRow[col] = new BoardCell(new CellPosition(row, col), BoardCellState.CLOSED, false);
+                currentRow[col] = new BoardCell(new CellPosition(row, col), CLOSED, false);
             }
         }
         return boardArea;
@@ -68,10 +70,20 @@ public class Board {
 
     public Board openBoardCell(CellPosition position) {
         BoardCell currentBoardCell = this.getBoardCell(position);
-        if (currentBoardCell.getState().equals(BoardCellState.CLOSED)) {
-            currentBoardCell.setState(BoardCellState.OPENED);
+        if (currentBoardCell.getState().equals(CLOSED)) {
+            currentBoardCell.setState(OPENED);
             this.mineOpened = currentBoardCell.getIsMined();
             this.openNeighborCells(currentBoardCell);
+        }
+        return this;
+    }
+
+    public Board flagBoardCell(CellPosition cellPosition) {
+        BoardCellState currentState = this.getBoardCell(cellPosition).getState();
+        if (currentState.equals(CLOSED)) {
+            this.getBoardCell(cellPosition).setState(FLAGGED);
+        } else if (currentState.equals(FLAGGED)) {
+            this.getBoardCell(cellPosition).setState(CLOSED);
         }
         return this;
     }
@@ -82,7 +94,7 @@ public class Board {
             boolean allNeighborsAreSafe = neighbors.stream()
                     .noneMatch(BoardCell::getIsMined);
             if (allNeighborsAreSafe) {
-                neighbors.forEach(n -> n.setState(BoardCellState.OPENED));
+                neighbors.forEach(n -> n.setState(OPENED));
                 this.totalEmptyCells = this.totalEmptyCells - neighbors.size() - 1;
             }
         }

@@ -1,6 +1,7 @@
 package com.exercise.minesweeper.adapters;
 
 import com.exercise.minesweeper.domain.Board;
+import com.exercise.minesweeper.domain.MinesweeperGame;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,4 +15,10 @@ public class GameResponse {
     private String username;
     private String gameStatus;
     private Board board;
+
+    public static GameResponse from(MinesweeperGame game) {
+        GameResponse gameResponse = new GameResponse(game.getGameId(), "andres",
+                game.getStatus().label, game.getBoard());
+        return gameResponse;
+    }
 }

@@ -1,6 +1,9 @@
 package com.exercise.minesweeper.adapters;
 
 import com.exercise.minesweeper.TestUtils;
+import com.exercise.minesweeper.domain.Difficulty;
+import com.exercise.minesweeper.domain.GameService;
+import com.exercise.minesweeper.domain.MinesweeperGame;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +28,10 @@ public class RestGameControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private GameService gameService;
+
     private String rootUrl;
 
     @BeforeEach
@@ -53,9 +60,10 @@ public class RestGameControllerTest {
         MockHttpServletResponse response = createResult.getResponse();
         String gameId = getAsJsonObject(response).get("game_id").getAsString();
 
+        String updateGameContent = TestUtils.loadFile("classpath:com.exercise.minesweeper/requests/open_cell_request.json");
         this.mockMvc.perform(patch(rootUrl.concat("/").concat(gameId).concat("/boards"))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createGameContent))
+                .content(updateGameContent))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -73,9 +81,20 @@ public class RestGameControllerTest {
         MockHttpServletResponse response = createResult.getResponse();
         String gameId = getAsJsonObject(response).get("game_id").getAsString();
 
-        this.mockMvc.perform(get(rootUrl.concat("/").concat(gameId))
+        this.mockMvc.perform(get(rootUrl.concat("/").concat(gameId)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+    }
+
+    @Test
+    public void shouldReturn200WhenUserWinGame() throws Exception {
+        MinesweeperGame game = this.gameService.createNewGame(new NewGameRequest(4, 4, 3, Difficulty.ZERO.toString()));
+        String updateGameContent = TestUtils.loadFile("classpath:com.exercise.minesweeper/requests/open_cell_request.json");
+        this.mockMvc.perform(patch(rootUrl.concat("/").concat(game.getGameId()).concat("/boards"))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(createGameContent))
+                .content(updateGameContent))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();

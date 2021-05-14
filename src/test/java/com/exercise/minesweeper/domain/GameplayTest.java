@@ -42,6 +42,26 @@ public class GameplayTest {
     }
 
     @Test
+    public void shouldFlagBoardCell() {
+        NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.ZERO.toString());
+        MinesweeperGame newGame = new MinesweeperGame(gameRequest);
+        newGame.flagCell(new CellPosition(1, 1));
+        BoardCell flaggedCell = newGame.getBoard().getBoardCell(new CellPosition(1, 1));
+        Assertions.assertEquals(BoardCellState.FLAGGED, flaggedCell.getState());
+    }
+
+    @Test
+    public void shouldUnFlagBoardCellThatWasPreviouslyFlagged() {
+        NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.ZERO.toString());
+        MinesweeperGame newGame = new MinesweeperGame(gameRequest);
+        newGame.flagCell(new CellPosition(1, 1));
+        newGame.flagCell(new CellPosition(1, 1));
+
+        BoardCell unflaggedCell = newGame.getBoard().getBoardCell(new CellPosition(1, 1));
+        Assertions.assertEquals(BoardCellState.CLOSED, unflaggedCell.getState());
+    }
+
+    @Test
     public void shouldTerminateGameWhenOpenedCellHasAMine() {
         NewGameRequest gameRequest = new NewGameRequest(3, 3, 1, Difficulty.MEDIUM.toString());
         MinesweeperGame newGame = new MinesweeperGame(gameRequest);
