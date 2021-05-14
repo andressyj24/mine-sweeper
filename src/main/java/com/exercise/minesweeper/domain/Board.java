@@ -1,21 +1,27 @@
 package com.exercise.minesweeper.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.exercise.minesweeper.domain.BoardCellState.*;
+
 @Data
+@NoArgsConstructor
 public class Board {
 
     private BoardCell[][] boardArea;
     private Difficulty difficulty;
     private boolean mineOpened;
+    private Integer totalEmptyCells;
 
     public Board(Integer rows, Integer columns, String difficulty) {
         boardArea = initializeBoard(rows, columns);
         this.difficulty = Difficulty.valueOf(difficulty);
         this.mineOpened = false;
+        this.totalEmptyCells = (rows * columns) - this.getNumberOfMines();
         this.loadMinesInBoard();
     }
 
@@ -24,21 +30,12 @@ public class Board {
         for (int row = 0; row < this.getRows(); row++) {
             BoardCell[] currentRow = this.boardArea[row];
             for (int col = 0; col < currentRow.length; col++) {
-                currentRow[col] = new BoardCell(new CellPosition(row, col), BoardCellState.CLOSED, false);
+                currentRow[col] = new BoardCell(new CellPosition(row, col), CLOSED, false);
             }
         }
         return boardArea;
     }
 
-    public void printBoard() {
-        for (int row = 0; row < this.getRows(); row++) {
-            BoardCell[] currentRow = this.boardArea[row];
-            for (BoardCell boardCell : currentRow) {
-                System.out.print("| " + boardCell);
-            }
-            System.out.println();
-        }
-    }
 
     public Integer getNumberOfMines() {
         int totalNumberOfCells = this.getRows() * this.getColumns();
@@ -73,21 +70,32 @@ public class Board {
 
     public Board openBoardCell(CellPosition position) {
         BoardCell currentBoardCell = this.getBoardCell(position);
-        if (currentBoardCell.getState().equals(BoardCellState.CLOSED)) {
-            currentBoardCell.setState(BoardCellState.OPENED);
+        if (currentBoardCell.getState().equals(CLOSED)) {
+            currentBoardCell.setState(OPENED);
             this.mineOpened = currentBoardCell.getIsMined();
             this.openNeighborCells(currentBoardCell);
         }
         return this;
     }
 
+    public Board flagBoardCell(CellPosition cellPosition) {
+        BoardCellState currentState = this.getBoardCell(cellPosition).getState();
+        if (currentState.equals(CLOSED)) {
+            this.getBoardCell(cellPosition).setState(FLAGGED);
+        } else if (currentState.equals(FLAGGED)) {
+            this.getBoardCell(cellPosition).setState(CLOSED);
+        }
+        return this;
+    }
+
     private void openNeighborCells(BoardCell currentBoardCell) {
         if (!this.mineOpened) {
-            boolean allNeighborsAreSafe = this.getNeighborsOf(currentBoardCell.getCellPosition()).stream()
+            List<BoardCell> neighbors = this.getNeighborsOf(currentBoardCell.getCellPosition());
+            boolean allNeighborsAreSafe = neighbors.stream()
                     .noneMatch(BoardCell::getIsMined);
             if (allNeighborsAreSafe) {
-                this.getNeighborsOf(currentBoardCell.getCellPosition())
-                        .forEach(n -> n.setState(BoardCellState.OPENED));
+                neighbors.forEach(n -> n.setState(OPENED));
+                this.totalEmptyCells = this.totalEmptyCells - neighbors.size() - 1;
             }
         }
     }
@@ -98,7 +106,7 @@ public class Board {
 
         return neighborsMap.values().stream()
                 .map(this::getBoardCell)
-                .filter(boardCell -> boardCell != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -111,13 +119,28 @@ public class Board {
     }
 
     public List<BoardCell> getListOfBoardCells(List<CellPosition> positions) {
-        return positions.stream().map(p -> this.getBoardCell(p)).collect(Collectors.toList());
+        return positions.stream().map(this::getBoardCell).collect(Collectors.toList());
     }
 
-    public List<BoardCell> getAllBoardCells() {
+    public List<BoardCell> listAllBoardCells() {
         List<BoardCell> allCells = new ArrayList<>();
         Arrays.stream(this.boardArea).map(row -> allCells.addAll(List.of(row)));
         return allCells;
+    }
+
+    public void printBoard() {
+        for (int row = 0; row < this.getRows(); row++) {
+            BoardCell[] currentRow = this.boardArea[row];
+            for (BoardCell boardCell : currentRow) {
+                System.out.print("| " + boardCell);
+            }
+            System.out.println();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(this.boardArea);
     }
 
 }

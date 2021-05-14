@@ -2,8 +2,10 @@ package com.exercise.minesweeper.domain;
 
 import com.exercise.minesweeper.adapters.NewGameRequest;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class MinesweeperGame {
 
     private String gameId;
@@ -17,10 +19,20 @@ public class MinesweeperGame {
         this.status = GameStatus.IN_PROGRESS;
     }
 
-    public void openCell(CellPosition cellPosition) {
+    public MinesweeperGame openCell(CellPosition cellPosition) {
         if (this.status.equals(GameStatus.IN_PROGRESS)) {
             this.board = this.board.openBoardCell(cellPosition);
-            this.status = this.board.isMineOpened() ? GameStatus.OVER : GameStatus.IN_PROGRESS;
+            GameStatus status = this.board.getTotalEmptyCells().equals(0)? GameStatus.WIN : GameStatus.IN_PROGRESS;
+            this.status = this.board.isMineOpened() ? GameStatus.OVER : status;
         }
+        return this;
+    }
+
+    //TODO: Implement this funcionality
+    public MinesweeperGame flagCell(CellPosition cellPosition) {
+        if (this.status.equals(GameStatus.IN_PROGRESS)) {
+            this.board = this.board.flagBoardCell(cellPosition);
+        }
+        return this;
     }
 }

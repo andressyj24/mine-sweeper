@@ -2,7 +2,8 @@ package com.exercise.minesweeper.domain;
 
 public enum GameStatus {
     IN_PROGRESS("IN_PROGRESS"),
-    OVER("OVER");
+    OVER("OVER"),
+    WIN("WIN");
 
     public final String label;
 

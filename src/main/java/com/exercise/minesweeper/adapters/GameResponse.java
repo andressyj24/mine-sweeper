@@ -7,18 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class UpdateGameResponse {
+@AllArgsConstructor
+public class GameResponse {
 
     private String gameId;
     private String username;
     private String gameStatus;
     private Board board;
 
-    public static UpdateGameResponse from(MinesweeperGame game) {
-        return new UpdateGameResponse(game.getGameId(), "andres",
+    public static GameResponse from(MinesweeperGame game) {
+        return new GameResponse(game.getGameId(), "andres",
                 game.getStatus().label, game.getBoard());
     }
-
 }
